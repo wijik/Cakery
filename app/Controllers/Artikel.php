@@ -13,6 +13,7 @@ class Artikel extends BaseController
         $this->session = session();
         $this->blogModel = new \App\Models\BlogModel();
         $this->komentarModel = new \App\Models\KomentarModel();
+        $this->kmnArtikel = new \App\Models\KomentarArtikelModel();
     }
     public function index()
     {
@@ -42,14 +43,12 @@ class Artikel extends BaseController
     public function detail($slug)
     {
         $artikel = $this->blogModel->cekSlug($slug);
-        // $blog = $this->blogModel->select($slug);
-        // dd($blog);
-        // $id = $blog['id'];
-
+        $getId = $this->blogModel->select($slug);
+        $id = $getId[0]['id'];
         $data = [
             'artikel' => $artikel,
             'latest' => $this->blogModel->findAll(3),
-            // 'komentar' => $this->komentarModel->join('user', 'user.id = komentar.id_user')->where('id_blog', $id)->findAll(),
+            'komentar' => $this->kmnArtikel->join('user', 'user.id = komentar_artikel.id_user')->where('id_blog', $id)->findAll(),
         ];
 
         return view('Artikel/detail', $data);

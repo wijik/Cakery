@@ -24,18 +24,12 @@ class BlogModel extends Model
     }
     public function select($slug)
     {
-        $sql = "Select * from blog where slug = $slug";
+        $sql = "Select * from blog where slug = '$slug'";
         $query = $this->db->query($sql);
         $array = $query->getResultArray();
         return $array;
     }
-    public function hitung($id)
-    {
-        $query = "SELECT COUNT(category) from blog where category = '.$id.'";
-        $result = $this->db->query($query);
-        $row = $result->getResult();
-        return $row;
-    }
+
     public function cekSlug($slug = false)
     {
         if ($slug == false) {

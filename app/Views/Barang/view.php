@@ -9,11 +9,11 @@ $session = session();
             <div class="row">
                 <div class="col-xs-12">
                     <div class="bradcaump__inner text-center">
-                        <h2 class="bradcaump-title">Product Details</h2>
+                        <h2 class="bradcaump-title">Detail barang</h2>
                         <nav class="bradcaump-inner">
                             <a class="breadcrumb-item" href="/barang">Home</a>
                             <span class="brd-separetor">/</span>
-                            <span class="breadcrumb-item active">Product Details</span>
+                            <span class="breadcrumb-item active">Detail Barang</span>
                         </nav>
                     </div>
                 </div>
@@ -180,20 +180,25 @@ $session = session();
                         <div class="rating__wrap">
                             <h2 class="rating-title">Tulis Komentar</h2>
                         </div>
+                        <?php if (!session()->isLoggedIn) : ?>
+                            <h3><a href="/auth/login">Login</a> terlebih dahulu untuk bisa membuat komentar</h3>
+                        <?php endif ?>
                         <!-- End RAting Area -->
-                        <div class="review__box">
-                            <form id="review-form" action="/komentar/create/<?= $bahan['id']; ?>" method="POST">
-                                <div class="single-review-form">
-                                    <div class="review-box message">
-                                        <textarea placeholder="Tulis Komentar" id="komentar" name="komentar"></textarea>
+                        <?php if (session()->isLoggedIn) : ?>
+                            <div class="review__box">
+                                <form id="review-form" action="/komentar/create/<?= $bahan['id']; ?>" method="POST">
+                                    <div class="single-review-form">
+                                        <div class="review-box message">
+                                            <textarea placeholder="Tulis Komentar" id="komentar" name="komentar"></textarea>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="review-btn">
-                                    <!-- <a class="fv-btn" href="#">submit review</a> -->
-                                    <input type="submit" name="submit" class="btn-cmnt" style="width: 100%;" value="Kirim">
-                                </div>
-                            </form>
-                        </div>
+                                    <div class="review-btn">
+                                        <!-- <a class="fv-btn" href="#">submit review</a> -->
+                                        <input type="submit" name="submit" class="btn-cmnt" style="width: 100%;" value="Kirim">
+                                    </div>
+                                </form>
+                            </div>
+                        <?php endif ?>
                     </div>
                     <!-- End Single Content -->
                 </div>

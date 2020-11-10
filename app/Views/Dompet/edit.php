@@ -14,8 +14,8 @@
                             <input type="hidden" name="id" id="id" value="<?= $dompet['id']; ?>">
                             <?= csrf_field(); ?>
                             <div class="form-group">
-                                <label for="jumlah" class="form-control-label">Jumlah</label>
-                                <input type="number" name="jumlah" id="jumlah" class="form-control <?= ($validation->hasError('jumlah')) ? 'is-invalid' : ''; ?>" min="0" value="<?= (old('jumlah')) ? old('jumlah') : $dompet['jumlah'] ?>">
+                                <label for="jumlah" class="form-control-label">Masukan Nominal</label>
+                                <input type="number" name="jumlah" id="jumlah" class="form-control <?= ($validation->hasError('jumlah')) ? 'is-invalid' : ''; ?>" min="0">
                                 <div class=" invalid-feedback">
                                     <?= $validation->getError('jumlah'); ?>
                                 </div>

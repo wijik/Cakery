@@ -54,6 +54,11 @@
 					<span class="login100-form-title p-b-53">
 						Login
 					</span>
+					<?php if (session()->getFlashdata('pesan')) : ?>
+						<div class="alert alert-danger col-12" role="alert">
+							<?= session()->getFlashdata('pesan'); ?>
+						</div>
+					<?php endif; ?>
 					<?php if ($errors != null) : ?>
 						<div class="alert alert-danger col-12" role="alert">
 							<h4 class="alert-heading">Terjadi kesalahan</h4>

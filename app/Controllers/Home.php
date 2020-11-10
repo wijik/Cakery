@@ -12,9 +12,6 @@ class Home extends BaseController
 	}
 	public function index()
 	{
-		if ($this->session->get('role') == 0) {
-			return redirect()->to('dashboard');
-		}
 		$data = [
 			'bahan' => $this->bahanModel->findAll(),
 			'slide' => $this->bahanModel->findAll(3),

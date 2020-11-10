@@ -1,5 +1,11 @@
 <?= $this->extend('admin/layout'); ?>
 <?= $this->section('content'); ?>
+<?php
+$userModel = new \App\Models\UserModel();
+$bahan = new \App\Models\BahanModel();
+$pembeli = $userModel->find($transaksi['id_pembeli'])['username'];
+$barang = $bahan->find($transaksi['id_barang'])['nama_barang'];
+?>
 <div class="main-content">
     <div class="section__content section__content--p30">
         <div class="container-fluid">
@@ -8,8 +14,8 @@
                 <table class="table table-borderless table-data3">
                     <thead>
                         <th>Id</th>
-                        <th>Id Barang</th>
-                        <th>Id Pembeli</th>
+                        <th>Barang</th>
+                        <th>Pembeli</th>
                         <th>Created Date</th>
                         <th>Created by</th>
                         <th>Updated Date</th>
@@ -22,8 +28,8 @@
                     <tbody>
                         <tr>
                             <td><?= $transaksi['id']; ?></td>
-                            <td><?= $transaksi['id_barang']; ?></td>
-                            <td><?= $transaksi['id_pembeli']; ?></td>
+                            <td><?= $barang; ?></td>
+                            <td><?= $pembeli; ?></td>
                             <td><?= $transaksi['created_date']; ?></td>
                             <td><?= $transaksi['created_by']; ?></td>
                             <td><?= $transaksi['updated_date']; ?></td>

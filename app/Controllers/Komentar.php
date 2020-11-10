@@ -10,6 +10,8 @@ class Komentar extends BaseController
         $this->validation = \Config\Services::validation();
         $this->session = session();
         $this->komentarModel = new \App\Models\KomentarModel();
+        $this->kmnArtikel = new \App\Models\KomentarArtikelModel();
+        $this->blogModel = new \App\Models\BlogModel();
     }
 
     public function create($id)
@@ -36,6 +38,8 @@ class Komentar extends BaseController
     }
     public function komen($id)
     {
+        $getId = $this->blogModel->find($id);
+        $slug = $getId['slug'];
         $id_user = $this->session->get('id');
         $id_blog = $id;
         $komentar = $this->request->getPost('komentar');
@@ -45,12 +49,12 @@ class Komentar extends BaseController
             'id_user' => $id_user,
             'id_blog' => $id_blog,
             'komentar' => $komentar,
-            'created_by' => $created_by,
+            'created_date' => date("Y-m-d H:i:s"),
         ];
-        $simpan = $this->komentarModel->insert_komentar($data);
+        $simpan = $this->kmnArtikel->insert_komentar($data);
         if ($simpan) {
             session()->setFlashdata('pesan', 'Komen berhasil di tambahkan');
-            return redirect()->to(base_url('artikel/' . $id));
+            return redirect()->to(base_url('artikel/' . $slug));
         }
     }
 }

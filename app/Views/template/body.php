@@ -3,7 +3,7 @@
 <div class="container">
     <div class="row">
         <?php foreach ($bahan as $b) : ?>
-            <div class="col-lg-6">
+            <div class="col-lg-6" style="margin-bottom: 50px;">
                 <div class="card" style="width: 30rem;margin-bottom:10px;">
                     <img src="/uploads/<?= $b['gambar']; ?>" class="card-img-top" alt="gambar barang" style="width: 500px;height:300px;">
                     <div class="card-body">

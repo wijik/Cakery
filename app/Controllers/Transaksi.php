@@ -11,6 +11,7 @@ class Transaksi extends BaseController
         helper('form');
         $this->validation = \Config\Services::validation();
         $this->session = session();
+        $this->email = \Config\Services::email();
         $this->transModel = new \App\Models\TransaksiModel();
         $this->userModel = new \App\Models\UserModel();
         $this->barangModel = new \App\Models\BahanModel();
@@ -76,5 +77,28 @@ class Transaksi extends BaseController
         // kalo mau tampil pdf di browser
         // $this->response->setContentType('application/pdf');
         $pdf->Output(__DIR__ . '/../../public/uploads/Invoice.pdf', 'F');
+
+        $attachment = base_url('uploads/Invoice.pdf');
+
+        $message = "<h1>Invoice Pembelian</h1><p>Kepada " . $pembeli['username'] . " Berikut invoice atas pembelian " . $barang['nama_barang'] . "</p>";
+
+        //$to bisa di isi dengan email user
+        $this->sendEmail($attachment, $pembeli['email'], 'Invoice', $message);
+
+        return redirect()->to('transaksi/index');
+    }
+    private function sendEmail($attachment, $to, $title, $message)
+    {
+        $this->email->setFrom('dimasbayu080103@gmail.com', 'DimasBayu');
+        $this->email->setTo($to);
+        $this->email->attach($attachment);
+        $this->email->setSubject($title);
+        $this->email->setMessage($message);
+
+        if (!$this->email->send()) {
+            return false;
+        } else {
+            return true;
+        }
     }
 }

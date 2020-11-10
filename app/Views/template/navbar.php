@@ -22,11 +22,10 @@ $session = session();
                             </li>
                             <li class="drop"><a href="/barang">Shop</a>
                             </li>
-                            <li class="drop"><a href="/cart/index/<?= $session->get('id'); ?>">Cart</a>
-                            </li>
-                            <!-- End Single Mega MEnu -->
-                            <!-- Start Single Mega MEnu -->
-                            <!-- End Single Mega MEnu -->
+                            <?php if (session()->isLoggedIn) : ?>
+                                <li class="drop"><a href="/cart/index/<?= $session->get('id'); ?>">Cart</a>
+                                </li>
+                            <?php endif ?>
                         </ul>
                     </nav>
                     <div class="mobile-menu clearfix visible-xs visible-sm">
@@ -67,10 +66,15 @@ $session = session();
                 <!-- End MAinmenu Ares -->
                 <div class="col-md-2 col-sm-4 col-xs-3">
                     <ul class="menu-extra">
-                        <li class="drop"><a href="/user/<?= session()->get('id'); ?>"><?= session()->get('username'); ?></a></li>
-                        <ul class="dropdown">
-                            <li><a href="<?= site_url('auth/logout'); ?>">Logout</a></li>
-                        </ul>
+                        <?php if (session()->isLoggedIn) : ?>
+                            <li class="drop"><a href="/user/<?= session()->get('id'); ?>"><?= session()->get('username'); ?></a></li>
+                            <ul class="dropdown">
+                                <li><a href="<?= site_url('auth/logout'); ?>">Logout</a></li>
+                            </ul>
+                        <?php endif ?>
+                        <?php if (!session()->isLoggedIn) : ?>
+                            <li><a href="/auth/login">Login</a></li>
+                        <?php endif ?>
                         <li class="toggle__menu hidden-xs hidden-sm"><span class="ti-menu"></span></li>
                         <!-- <li class="drop"><a href="#"><?= session()->get('username'); ?></a>
                             <ul class="dropdown">

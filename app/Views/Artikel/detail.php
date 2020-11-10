@@ -56,20 +56,31 @@
                             <div class="blog-comment-inner">
                                 <h2 class="section-title-2">Komen</h2>
                                 <!-- Start Single Comment -->
-                                <div class="single-blog-comment">
-                                    <div class="blog-comment-thumb">
-                                        <img src="images/comment/1.jpg" alt="comment images">
-                                    </div>
-                                    <div class="blog-comment-details">
-                                        <div class="comment-title-date">
-                                            <h2><a href="#">Martin Payet</a></h2>
-                                            <div class="reply">
-                                                <p>14 Sep 2017 / <a href="#">REPLY</a></p>
-                                            </div>
+                                <?php if (!$komentar) : ?>
+                                    <h3 style="margin-top: 10px;">Belum ada Berkomentar, jadilah yang pertama untuk berkomentar</h3>
+                                <?php endif ?>
+                                <?php foreach ($komentar as $k) : ?>
+                                    <?php
+                                    $modelUser = new \App\Models\UserModel();
+                                    $nama_user =  $modelUser->find($k['id_user'])['username'];
+                                    $waktu = $modelUser->find($k['id_user'])['created_date'];
+                                    $gambar = $modelUser->find($k['id_user'])['avatar'];
+                                    ?>
+                                    <div class="single-blog-comment">
+                                        <div class="blog-comment-thumb">
+                                            <img src="/uploads/<?= $gambar; ?>" alt="comment images">
                                         </div>
-                                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incidi ut labore et dolo magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation.</p>
+                                        <div class="blog-comment-details">
+                                            <div class="review__info">
+                                                <h4><a href="#"><?= $nama_user; ?></a></h4>
+                                            </div>
+                                            <div class="review__date">
+                                                <span><?= date("d M Y", strtotime($waktu)); ?></span>
+                                            </div>
+                                            <p style="max-width: 100%;"><?= $k['komentar']; ?></p>
+                                        </div>
                                     </div>
-                                </div>
+                                <?php endforeach ?>
                                 <!-- End Single Comment -->
                             </div>
                         </div>
@@ -77,19 +88,24 @@
                         <!-- Start Reply Form -->
                         <div class="our-reply-form-area mt--20">
                             <h2 class="section-title-2">TINGGALKAN KOMENTAR</h2>
-                            <div class="reply-form-inner mt--40">
-                                <form id="review-form" action="/komentar/komen/<?= $artikel['id']; ?>" method="POST">
-                                    <div class="single-review-form">
-                                        <div class="review-box message">
-                                            <textarea placeholder="Tulis Komentar" id="komentar" name="komentar"></textarea>
+                            <?php if (!session()->isLoggedIn) : ?>
+                                <h3 style="margin-top: 10px;"><a href="/auth/login">Login</a> terlebih dahulu untuk bisa berkomentar</h3>
+                            <?php endif ?>
+                            <?php if (session()->isLoggedIn) : ?>
+                                <div class="reply-form-inner mt--40">
+                                    <form id="review-form" action="/komentar/komen/<?= $artikel['id']; ?>" method="POST">
+                                        <div class="single-review-form">
+                                            <div class="review-box message">
+                                                <textarea placeholder="Tulis Komentar" id="komentar" name="komentar"></textarea>
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div class="review-btn">
-                                        <!-- <a class="fv-btn" href="#">submit review</a> -->
-                                        <input type="submit" name="submit" class="btn-cmnt" style="width: 100%;" value="Kirim">
-                                    </div>
-                                </form>
-                            </div>
+                                        <div class="review-btn">
+                                            <!-- <a class="fv-btn" href="#">submit review</a> -->
+                                            <input type="submit" name="submit" class="btn-cmnt" style="width: 100%;" value="Kirim">
+                                        </div>
+                                    </form>
+                                </div>
+                            <?php endif ?>
                         </div>
                         <!-- End Reply Form -->
                     </div>

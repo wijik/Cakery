@@ -13,6 +13,7 @@ class Barang extends BaseController
     {
         helper('date');
         $this->session = session();
+        $this->email = \Config\Services::email();
         $this->bahanModel = new \App\Models\BahanModel();
         $this->transModel = new \App\Models\TransaksiModel();
         $this->komentarModel = new \App\Models\KomentarModel();
@@ -55,6 +56,10 @@ class Barang extends BaseController
 
     public function beli()
     {
+        if (!$this->session->isLoggedIn) {
+            session()->setFlashdata('pesan', 'Login terlebih dahulu untuk membeli barang');
+            return redirect()->to('/auth/login');
+        }
         if ($this->request->getPost()) {
             if (!$this->validate([
                 'id_barang' => [

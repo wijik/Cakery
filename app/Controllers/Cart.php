@@ -71,6 +71,10 @@ class Cart extends BaseController
 
     public function create($id)
     {
+        if (!$this->session->isLoggedIn) {
+            session()->setFlashdata('pesan', 'Login terlebih dahulu untuk memasukan barang');
+            return redirect()->to('/auth/login');
+        }
         // $kue = $this->kueModel->find($id);
         $id_user = $this->session->get('id');
         $id_barang = $this->request->uri->getSegment(3);

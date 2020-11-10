@@ -119,10 +119,12 @@ class Dompet extends BaseController
             return redirect()->to('/dompet/edit/' . $this->request->getVar('id'))->withInput();
         }
 
-        $jumlah = $this->request->getPost('jumlah');
+        $nominal = $this->request->getPost('jumlah');
+        $uang = $this->dompetModel->find($id);
+        $tambah = $uang['jumlah'] + $nominal;
 
         $data = [
-            'jumlah' => $jumlah,
+            'jumlah' => $tambah,
             'updated_date' => date("Y-m-d H:i:s"),
             'updated_by' => $this->session->get('id'),
         ];
