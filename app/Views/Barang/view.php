@@ -140,8 +140,8 @@ $session = session();
         <div class="row">
             <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
                 <ul class="product__deatils__tab mb--60" role="tablist">
-                    <li role="presentation">
-                        <a href="#reviews" role="tab" data-toggle="tab">Reviews</a>
+                    <li role="presentation" class="active">
+                        <a href="#reviews" role="tab" data-toggle="tab">Komentar</a>
                     </li>
                 </ul>
             </div>
@@ -150,7 +150,15 @@ $session = session();
             <div class="col-md-12">
                 <div class="product__details__tab__content">
                     <!-- Start Single Content -->
-                    <div role="tabpanel" id="reviews" class="product__tab__content fade">
+                    <div role="tabpanel" id="reviews" class="product__tab__content fade in active">
+                        <?php if (session()->getFlashdata('pesan')) : ?>
+                            <div class="alert alert-success col-12" role="alert" style="margin-top: 10px;">
+                                <?= session()->getFlashdata('pesan'); ?>
+                            </div>
+                        <?php endif; ?>
+                        <?php if (!$komentar) : ?>
+                            <h3 style="margin-bottom: 50px;font-size:25px;">Belum ada yang berkomentar, jadilah yang pertama untuk berkomentar</h3>
+                        <?php endif ?>
                         <?php foreach ($komentar as $k) : ?>
                             <?php
                             $modelUser = new \App\Models\UserModel();
@@ -171,7 +179,15 @@ $session = session();
                                         <div class="review__date">
                                             <span><?= date("d M Y", strtotime($waktu)); ?></span>
                                         </div>
-                                        <p style="max-width: 100%;"><?= $k['komentar']; ?></p>
+                                        <p><?= $k['komentar']; ?></p>
+                                        <?php if ($k['id_user'] == session()->get('id')) : ?>
+                                            <form action="/komentar/deleteKmn/<?= $k['id']; ?>" method="POST" class="d-inline">
+                                                <?= csrf_field(); ?>
+                                                <input type="hidden" name="barang" value="<?= $bahan['id']; ?>">
+                                                <input type="hidden" name="_method" value="DELETE">
+                                                <button type="submit" class="btn-delete-kmn-bhn" onclick="return confirm('apakah anda yakin ingin mengahpus komentar ini?');">Hapus komentar</button>
+                                            </form>
+                                        <?php endif ?>
                                     </div>
                                 </div><br>
                             </div>
@@ -208,7 +224,7 @@ $session = session();
 </section>
 <?= $this->endSection(); ?>
 <?= $this->section('script'); ?>
-<script src="<?= base_url('ckeditor5-build-classic/ckeditor.js'); ?>" type="text/javascript"></script>
+<!-- <script src="<?= base_url('ckeditor5-build-classic/ckeditor.js'); ?>" type="text/javascript"></script>
 <style>
     .ck-editor__editable_inline {
         min-height: 200px;
@@ -224,5 +240,5 @@ $session = session();
         .catch(error => {
             console.error(error);
         });
-</script>
+</script> -->
 <?= $this->endSection(); ?>

@@ -48,7 +48,7 @@ class Barang extends BaseController
     {
         $data = [
             'bahan' => $this->bahanModel->find($id),
-            'komentar' => $this->komentarModel->join('user', 'user.id = komentar.id_user')->where('id_barang', $id)->findAll(),
+            'komentar' => $this->komentarModel->where('id_barang', $id)->findAll(),
         ];
 
         return view('Barang/view', $data);

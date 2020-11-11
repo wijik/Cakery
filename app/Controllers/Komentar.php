@@ -12,6 +12,7 @@ class Komentar extends BaseController
         $this->komentarModel = new \App\Models\KomentarModel();
         $this->kmnArtikel = new \App\Models\KomentarArtikelModel();
         $this->blogModel = new \App\Models\BlogModel();
+        $this->bahanModel = new \App\Models\BahanModel();
     }
 
     public function create($id)
@@ -32,7 +33,7 @@ class Komentar extends BaseController
         $simpan = $this->komentarModel->insert_komentar($data);
 
         if ($simpan) {
-            session()->setFlashdata('pesan', 'Komen berhasil di tambahkan');
+            session()->setFlashdata('pesan', 'Komentar berhasil di tambahkan');
             return redirect()->to(base_url('/barang/view/' . $id_barang));
         }
     }
@@ -53,8 +54,27 @@ class Komentar extends BaseController
         ];
         $simpan = $this->kmnArtikel->insert_komentar($data);
         if ($simpan) {
-            session()->setFlashdata('pesan', 'Komen berhasil di tambahkan');
+            session()->setFlashdata('pesan', 'Komentar berhasil di tambahkan');
             return redirect()->to(base_url('artikel/' . $slug));
         }
+    }
+    public function delete($id)
+    {
+        $id_blog = $this->request->getVar('blog');
+        $getBlog = $this->blogModel->find($id_blog);
+        $slug = $getBlog['slug'];
+        $this->kmnArtikel->delete($id);
+        session()->setFlashdata('pesan', 'Komentar Berhasil di hapus');
+        return redirect()->to('/artikel/' . $slug);
+    }
+    public function deleteKmn($id)
+    {
+        $barang = $this->request->getVar('barang');
+        $getBarang = $this->bahanModel->find($barang);
+        $id_barang = $getBarang['id'];
+
+        $this->komentarModel->delete($id);
+        session()->setFlashdata('pesan', 'Komentar Berhasil di hapus');
+        return redirect()->to('/barang/view/' . $id_barang);
     }
 }

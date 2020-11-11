@@ -54,10 +54,15 @@
                         <!-- Start Blog Comment Area -->
                         <div class="our-blog-comment mt--20">
                             <div class="blog-comment-inner">
-                                <h2 class="section-title-2">Komen</h2>
+                                <h2 class="section-title-2">Komentar</h2>
+                                <?php if (session()->getFlashdata('pesan')) : ?>
+                                    <div class="alert alert-success col-12" role="alert" style="margin-top: 10px;">
+                                        <?= session()->getFlashdata('pesan'); ?>
+                                    </div>
+                                <?php endif; ?>
                                 <!-- Start Single Comment -->
                                 <?php if (!$komentar) : ?>
-                                    <h3 style="margin-top: 10px;">Belum ada Berkomentar, jadilah yang pertama untuk berkomentar</h3>
+                                    <h3 style="margin-top: 10px;">Belum ada yang berkomentar, jadilah yang pertama untuk berkomentar</h3>
                                 <?php endif ?>
                                 <?php foreach ($komentar as $k) : ?>
                                     <?php
@@ -79,6 +84,14 @@
                                             </div>
                                             <p style="max-width: 100%;"><?= $k['komentar']; ?></p>
                                         </div>
+                                        <?php if ($k['id_user'] == session()->get('id')) : ?>
+                                            <form action="/komentar/delete/<?= $k['id']; ?>" method="POST" class="d-inline">
+                                                <?= csrf_field(); ?>
+                                                <input type="hidden" name="blog" value="<?= $artikel['id']; ?>">
+                                                <input type="hidden" name="_method" value="DELETE">
+                                                <button type="submit" class="btn-delete-kmn" onclick="return confirm('apakah anda yakin ingin mengahpus komentar ini?');">Hapus komentar</button>
+                                            </form>
+                                        <?php endif ?>
                                     </div>
                                 <?php endforeach ?>
                                 <!-- End Single Comment -->

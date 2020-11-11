@@ -2737,6 +2737,43 @@ select.select-color {
   transition: 0.3s;
   height: 44px;
 }
+.btn-delete-kmn-bhn {
+  color: #4b4b4b;
+  background-color: white;
+  border: 1px solid #d5d5d5;
+  padding: 5px;
+  font-size: 14px;
+  text-transform: uppercase;
+  width: 150px;
+  margin: 5px;
+  text-align: center;
+  transition: 0.3s;
+  height: 44px;
+}
+.btn-delete-kmn-bhn:hover {
+  color: #fff;
+  background: #ff4136;
+  border: 1px solid #ff4136;
+}
+.btn-delete-kmn {
+  color: #4b4b4b;
+  background-color: white;
+  border: 1px solid #d5d5d5;
+  padding: 5px;
+  font-size: 14px;
+  text-transform: uppercase;
+  width: 150px;
+  margin: 5px;
+  text-align: center;
+  transition: 0.3s;
+  height: 44px;
+  margin-left: 410px;
+}
+.btn-delete-kmn:hover {
+  color: #fff;
+  background: #ff4136;
+  border: 1px solid #ff4136;
+}
 .btn-see:hover {
   color: #fff;
   background: #ff4136;

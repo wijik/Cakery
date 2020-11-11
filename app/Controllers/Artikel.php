@@ -48,7 +48,7 @@ class Artikel extends BaseController
         $data = [
             'artikel' => $artikel,
             'latest' => $this->blogModel->findAll(3),
-            'komentar' => $this->kmnArtikel->join('user', 'user.id = komentar_artikel.id_user')->where('id_blog', $id)->findAll(),
+            'komentar' => $this->kmnArtikel->where('id_blog', $id)->findAll(),
         ];
 
         return view('Artikel/detail', $data);

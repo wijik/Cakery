@@ -108,19 +108,10 @@ $session = session();
                         <!-- end kuantiti -->
                         <ul class="pro__dtl__btn">
                             <li class="buy__now__btn">
-                                <input type="submit" name="submit" id="submit" class="btn-edit" value="Edit">
+                                <input type="submit" name="submit" id="submit" class="btn-edit" value="Ubah">
                             </li>
                         </ul>
                     </form>
-                    <div class="pro__social__share">
-                        <h2>Share :</h2>
-                        <ul class="pro__soaial__link">
-                            <li><a href="#"><i class="zmdi zmdi-twitter"></i></a></li>
-                            <li><a href="#"><i class="zmdi zmdi-instagram"></i></a></li>
-                            <li><a href="#"><i class="zmdi zmdi-facebook"></i></a></li>
-                            <li><a href="#"><i class="zmdi zmdi-google-plus"></i></a></li>
-                        </ul>
-                    </div>
                 </div>
             </div>
         </div>
