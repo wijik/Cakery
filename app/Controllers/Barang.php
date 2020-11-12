@@ -151,34 +151,42 @@ class Barang extends BaseController
                 $balik = $uangAdmin + $total_harga;
                 $this->dompetModel->balik($balik);
 
-                // pdf invoice
-
-
-                // $html = view('Barang/invoice', $data);
-
-                // $pdf = new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
-
-                // $pdf->SetCreator(PDF_CREATOR);
-                // $pdf->SetAuthor('Dimas Bayu');
-                // $pdf->SetTitle('Invoice');
-                // $pdf->SetSubject('Invoice');
-
-                // $pdf->setPrintHeader(false);
-                // $pdf->setPrintFooter(false);
-
-                // $pdf->AddPage();
-
-                // $pdf->writeHTML($html, true, false, true, false, '');
-                // // kalo mau tampil pdf di browser
-                // // $this->response->setContentType('application/pdf');
-                // $pdf->Output(__DIR__ . '/../../public/uploads/Invoice.pdf', 'D');
-
                 // simpan data transaksi
                 $simpan = $this->transModel->insert_trans($data);
 
                 if ($simpan) {
-                    session()->setFlashdata('pesan', 'Barang dibeli.');
-                    return redirect()->to(base_url('/barang'));
+                    // pdf invoice
+                    $tranksaksi = $this->transModel->last();
+                    $pembeli = $this->userModel->find($tranksaksi[0]['id_pembeli']);
+                    $barang = $this->bahanModel->find($tranksaksi[0]['id_barang']);
+
+                    $invoice = [
+                        'transaksi' => $tranksaksi,
+                        'pembeli' => $pembeli,
+                        'barang' => $barang,
+                    ];
+
+                    $html = view('Barang/invoice', $invoice);
+
+                    $pdf = new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
+
+                    $pdf->SetCreator(PDF_CREATOR);
+                    $pdf->SetAuthor('Dimas Bayu');
+                    $pdf->SetTitle('Invoice');
+                    $pdf->SetSubject('Invoice');
+
+                    $pdf->setPrintHeader(false);
+                    $pdf->setPrintFooter(false);
+
+                    $pdf->AddPage();
+
+                    $pdf->writeHTML($html, true, false, true, false, '');
+                    // kalo mau tampil pdf di browser
+                    $this->response->setContentType('application/pdf');
+                    if ($pdf->Output('Invoice.pdf', 'I')) {
+                        session()->setFlashdata('pesan', 'Barang dibeli.');
+                        return redirect()->to(base_url('/barang'));
+                    }
                 }
             }
         }

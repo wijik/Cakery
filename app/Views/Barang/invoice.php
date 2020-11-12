@@ -25,9 +25,9 @@
     <hr>
     <p>
         Pembeli : <?= $pembeli['username']; ?><br>
-        Alamat : <?= $transaksi['alamat']; ?> <br>
-        Transaksi No.: <?= $transaksi['id']; ?><br>
-        Tanggal : <?= date("Y-m-d", strtotime($transaksi['created_date'])); ?>
+        Alamat : <?= $transaksi[0]['alamat']; ?> <br>
+        Transaksi No.: <?= $transaksi[0]['id']; ?><br>
+        Tanggal : <?= date("Y-m-d", strtotime($transaksi[0]['created_date'])); ?>
     </p>
     <table cellpadding="6">
         <tr>
@@ -40,9 +40,9 @@
         <tr>
             <td><?= $barang['nama_barang']; ?></td>
             <td><?= "Rp. " . number_format($barang['harga'], 2, ',', '.'); ?></td>
-            <td><?= $transaksi['jumlah']; ?></td>
-            <td><?= "Rp. " . number_format($transaksi['ongkir'], 2, ',', '.'); ?></td>
-            <td><?= "Rp. " . number_format($transaksi['total_harga'], 2, ',', '.'); ?></td>
+            <td><?= $transaksi[0]['jumlah']; ?></td>
+            <td><?= "Rp. " . number_format($transaksi[0]['ongkir'], 2, ',', '.'); ?></td>
+            <td><?= "Rp. " . number_format($transaksi[0]['total_harga'], 2, ',', '.'); ?></td>
         </tr>
     </table>
 </body>

@@ -75,6 +75,7 @@ $session = session();
                                     <input type="text" placeholder="Total harga" name="total_harga" id="total_harga" readonly style="width: 100%;">
                                 </div>
                                 <div class="single-checkout-box">
+                                    <label for="alamat">Alamat</label><br>
                                     <textarea name="alamat" id="alamat" placeholder="Alamat"></textarea>
                                 </div>
                                 <div class="single-checkout-box">

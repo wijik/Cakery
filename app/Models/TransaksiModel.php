@@ -23,4 +23,11 @@ class TransaksiModel extends Model
 
         return $this->table('transaksi')->like('id_kue', $keyword)->orLike('id_pembeli', $keyword);
     }
+    public function last()
+    {
+        $sql = "SELECT * FROM `transaksi`  ORDER BY `id` DESC limit 1";
+        $query = $this->db->query($sql);
+        $array = $query->getResultArray();
+        return $array;
+    }
 }
