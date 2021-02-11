@@ -85,7 +85,9 @@ class User extends BaseController
             //upload gambar
             $avatar->move('uploads/', $namaAvatar);
             //hapus file lama
-            unlink('uploads/' . $this->request->getPost('avatarLama'));
+            if (!$namaAvatar == 'default.png') {
+                unlink('uploads/' . $this->request->getPost('avatarLama'));
+            }
         }
 
         $avatar = $namaAvatar;

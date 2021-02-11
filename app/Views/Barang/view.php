@@ -177,7 +177,7 @@ $session = session();
                                             <h4><a href="#"><?= $nama_user; ?></a></h4>
                                         </div>
                                         <div class="review__date">
-                                            <span><?= date("d M Y", strtotime($waktu)); ?></span>
+                                            <span><?= date("d M Y", strtotime($k['created_date'])); ?></span>
                                         </div>
                                         <p><?= $k['komentar']; ?></p>
                                         <?php if ($k['id_user'] == session()->get('id')) : ?>

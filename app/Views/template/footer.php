@@ -7,7 +7,7 @@
                     <div class="ft__widget">
                         <div class="ft__logo">
                             <a href="index.html">
-                                <img src="<?= base_url('images/logo/logo.png'); ?>" alt="footer logo">
+                                <img src="<?= base_url('images/logo/logo-cakery.png'); ?>" alt="footer logo">
                             </a>
                         </div>
                         <div class="footer-address">
@@ -17,7 +17,7 @@
                                         <i class="zmdi zmdi-pin"></i>
                                     </div>
                                     <div class="address-text">
-                                        <p>194 Main Rd T, FS Rayed <br> VIC 3057, USA</p>
+                                        <p>Bandung <br> Jawa Barat, Indonesia</p>
                                     </div>
                                 </li>
                                 <li>
@@ -25,7 +25,7 @@
                                         <i class="zmdi zmdi-email"></i>
                                     </div>
                                     <div class="address-text">
-                                        <a href="#"> info@example.com</a>
+                                        <a href="#"> cakery@gmail.com</a>
                                     </div>
                                 </li>
                                 <li>
@@ -33,7 +33,7 @@
                                         <i class="zmdi zmdi-phone-in-talk"></i>
                                     </div>
                                     <div class="address-text">
-                                        <p>+012 345 678 102 </p>
+                                        <p>+62 345 678 102 </p>
                                     </div>
                                 </li>
                             </ul>
@@ -48,7 +48,7 @@
                 </div>
                 <!-- End Single Footer Widget -->
                 <!-- Start Single Footer Widget -->
-                <div class="col-md-3 col-lg-2 col-sm-6 smt-30 xmt-30">
+<!--                 <div class="col-md-3 col-lg-2 col-sm-6 smt-30 xmt-30">
                     <div class="ft__widget">
                         <h2 class="ft__title">Categories</h2>
                         <ul class="footer-categories">
@@ -60,9 +60,9 @@
                             <li><a href="shop-sidebar.html">Denim</a></li>
                         </ul>
                     </div>
-                </div>
+                </div> -->
                 <!-- Start Single Footer Widget -->
-                <div class="col-md-3 col-lg-2 col-sm-6 smt-30 xmt-30">
+                <!-- <div class="col-md-3 col-lg-2 col-sm-6 smt-30 xmt-30">
                     <div class="ft__widget">
                         <h2 class="ft__title">Infomation</h2>
                         <ul class="footer-categories">
@@ -74,19 +74,19 @@
                             <li><a href="#">Privacy Policy</a></li>
                         </ul>
                     </div>
-                </div>
+                </div> -->
                 <!-- Start Single Footer Widget -->
-                <div class="col-md-3 col-lg-3 col-lg-offset-1 col-sm-6 smt-30 xmt-30">
+                <div class="col-md-6 col-lg-6 col-lg-offset-1 col-sm-6 smt-30 xmt-30">
                     <div class="ft__widget">
-                        <h2 class="ft__title">Newsletter</h2>
+                        <h2 class="ft__title">Berlangganan</h2>
                         <div class="newsletter__form">
-                            <p>Subscribe to our newsletter and get 10% off your first purchase .</p>
+                            <p>Berlangganan ke website kami agar dapat informasi menarik setiap hari nya</p>
                             <div class="input__box">
                                 <div id="mc_embed_signup">
                                     <form action="#" method="post" id="mc-embedded-subscribe-form" name="mc-embedded-subscribe-form" class="validate" target="_blank" novalidate>
                                         <div id="mc_embed_signup_scroll" class="htc__news__inner">
                                             <div class="news__input">
-                                                <input type="email" value="" name="EMAIL" class="email" id="mce-EMAIL" placeholder="Email Address" required>
+                                                <input type="email" value="" name="EMAIL" class="email" id="mce-EMAIL" placeholder="Alamat Email" required>
                                             </div>
                                             <!-- real people should not fill this in and expect good things - do not remove this or risk form bot signups-->
                                             <div style="position: absolute; left: -5000px;" aria-hidden="true"><input type="text" name="b_6bbb9b6f5827bd842d9640c82_05d85f18ef" tabindex="-1" value=""></div>
@@ -104,7 +104,7 @@
             </div>
         </div>
         <!-- Start Copyright Area -->
-        <div class="htc__copyright__area">
+        <!-- <div class="htc__copyright__area">
             <div class="row">
                 <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
                     <div class="copyright__inner">
@@ -120,7 +120,7 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div> -->
         <!-- End Copyright Area -->
     </div>
 </footer>

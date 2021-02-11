@@ -100,7 +100,7 @@
 
 					<div class="w-full text-center p-t-55">
 						<span class="txt2">
-							Belom mempunya akun?
+							Belom mempunyai akun?
 						</span><br>
 
 						<a href="<?= site_url('Auth/register'); ?>" class="txt2 bo1">

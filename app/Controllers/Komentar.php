@@ -21,14 +21,13 @@ class Komentar extends BaseController
         $id_barang = $id;
         $komentar = $this->request->getPost('komentar');
         $created_by = $this->session->get('id');
-        // $created_date = date("Y-m-d H:i:s");
 
         $data = [
             'id_user' => $id_user,
             'id_barang' => $id_barang,
             'komentar' => $komentar,
             'created_by' => $created_by,
-            // 'created_date' => $created_date,
+            'created_date' => date("Y-m-d H:i:s"),
         ];
         $simpan = $this->komentarModel->insert_komentar($data);
 

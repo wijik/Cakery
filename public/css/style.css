@@ -3229,6 +3229,7 @@ blockquote::before {
 .single-blog-comment {
   display: flex;
   margin-top: 40px;
+  width: 500px;
 }
 .blog-comment-thumb {
   margin-right: 30px;
@@ -4516,4 +4517,8 @@ a.shipping-calculator-button:hover {
   height: 300px;
   display: flex;
   margin-left: 70px;
+}
+.komentar {
+  display: inline-block;
+  width: 100%;
 }

@@ -9,6 +9,7 @@ class Auth extends BaseController
         helper('form');
         $this->validation = \Config\Services::validation();
         $this->session = session();
+        $this->dompetModel = new \App\Models\DompetModel();
     }
     public function register()
     {
@@ -32,9 +33,20 @@ class Auth extends BaseController
                 $user->created_date = date("Y-m-d H:i:s");
                 $userModel->save($user);
 
-                if ($userModel->save($user)) {
-                    return redirect()->to('login');
-                }
+                // isi dompet automatis
+                // $last = $userModel->last();
+                // $id_user = $last[0]['id'];
+
+                // $data = [
+                //     'id_user' => $id_user,
+                //     'jumlah' => '50000',
+                //     'created_date' => date("Y-m-d H:i:s"),
+                //     'created_by' => '14',
+                // ];
+
+                // $simpan = $this->dompetModel->insert_dompet($data);
+
+                return redirect()->to('login');
             }
 
             $this->session->setFlashdata('errors', $errors);
@@ -58,6 +70,7 @@ class Auth extends BaseController
             $password = $this->request->getPost('password');
 
             $user = $userModel->where('username', $username)->first();
+
 
             if ($user) {
                 $salt = $user['salt'];

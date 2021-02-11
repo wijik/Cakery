@@ -68,7 +68,6 @@
                                     <?php
                                     $modelUser = new \App\Models\UserModel();
                                     $nama_user =  $modelUser->find($k['id_user'])['username'];
-                                    $waktu = $modelUser->find($k['id_user'])['created_date'];
                                     $gambar = $modelUser->find($k['id_user'])['avatar'];
                                     ?>
                                     <div class="single-blog-comment">
@@ -76,16 +75,16 @@
                                             <img src="/uploads/<?= $gambar; ?>" alt="comment images">
                                         </div>
                                         <div class="blog-comment-details">
-                                            <div class="review__info">
-                                                <h4><a href="#"><?= $nama_user; ?></a></h4>
+                                            <div class="comment-title-date">
+                                                <h2><a href="#"><?= $nama_user; ?></a></h2>
+                                                <div class="reply">
+                                                    <p style="margin-top:20px;display:inline-block;width:max-content;margin-left:-45px;"><?= date("d M Y", strtotime($k['created_date'])); ?></p>
+                                                </div>
                                             </div>
-                                            <div class="review__date">
-                                                <span><?= date("d M Y", strtotime($waktu)); ?></span>
-                                            </div>
-                                            <p style="max-width: 100%;"><?= $k['komentar']; ?></p>
+                                            <p class="komentar"><?= $k['komentar']; ?></p>
                                         </div>
                                         <?php if ($k['id_user'] == session()->get('id')) : ?>
-                                            <form action="/komentar/delete/<?= $k['id']; ?>" method="POST" class="d-inline">
+                                            <form action="/komentar/delete/<?= $k['id']; ?>" method="POST">
                                                 <?= csrf_field(); ?>
                                                 <input type="hidden" name="blog" value="<?= $artikel['id']; ?>">
                                                 <input type="hidden" name="_method" value="DELETE">

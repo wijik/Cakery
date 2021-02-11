@@ -190,7 +190,7 @@ class Barang extends BaseController
                 }
             }
         }
-
+        
         $id = $this->request->uri->getSegment(3);
 
         $model = $this->bahanModel->find($id);
