@@ -183,7 +183,7 @@ $session = session();
                                         <?php if ($k['id_user'] == session()->get('id')) : ?>
                                             <form action="/komentar/deleteKmn/<?= $k['id']; ?>" method="POST" class="d-inline">
                                                 <?= csrf_field(); ?>
-                                                <input type="hidden" name="barang" value="<?= $bahan['id']; ?>">
+                                                <input type="hidden" name="barang" value="<?= $bahan['slug']; ?>">
                                                 <input type="hidden" name="_method" value="DELETE">
                                                 <button type="submit" class="btn-delete-kmn-bhn" onclick="return confirm('apakah anda yakin ingin mengahpus komentar ini?');">Hapus komentar</button>
                                             </form>

@@ -25,8 +25,8 @@
                             <tr>
                                 <th>No.</th>
                                 <th>Id</th>
-                                <th>Barang</th>
                                 <th>Pembeli</th>
+                                <th>Tanggal</th>
                                 <th>Aksi</th>
                             </tr>
                         </thead>
@@ -37,13 +37,12 @@
                                 $userModel = new \App\Models\UserModel();
                                 $bahan = new \App\Models\BahanModel();
                                 $pembeli = $userModel->find($t['id_pembeli'])['username'];
-                                $barang = $bahan->find($t['id_barang'])['nama_barang'];
                                 ?>
                                 <tr>
                                     <td><?= $i++; ?></td>
                                     <td><?= $t['id']; ?></td>
-                                    <td><?= $barang; ?></td>
                                     <td><?= $pembeli; ?></td>
+                                    <td><?= $t['created_date']; ?></td>
                                     <td>
                                         <a href="/transaksi/view/<?= $t['id']; ?>" class="btn btn-primary"><i class="fas fa-eye"></i></a>
                                     </td>

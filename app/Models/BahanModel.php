@@ -15,6 +15,26 @@ class BahanModel extends Model
     protected $createdField = 'created_at';
     protected $updatedField = 'updated_at';
 
+    public function getBarang($slug = false)
+    {
+        if ($slug == false) {
+            return $this->findAll();
+        }
+
+        return $this->where(['slug' => $slug])->first();
+    }
+
+    public function getProduct($id)
+    {
+        return $this->db->table($this->table)->where('id', $id)->get()->getRowArray();
+    }
+
+    public function searchId($slug)
+    {
+        $query = "SELECT id FROM bahan_kue WHERE slug = '$slug'";
+        return $this->db->query($query)->getRowArray();
+    }
+
     public function getbahan($id = false)
     {
         if ($id == false) {
@@ -42,10 +62,12 @@ class BahanModel extends Model
     {
         return $this->db->table($this->table)->update($data, ['id' => $id]);
     }
+
     public function stok($kurang, $id_barang)
     {
         return $this->db->table($this->table)->update(['stok' => $kurang], ['id' => $id_barang]);
     }
+
     public function select($id)
     {
         $sql = "Select * from bahan_kue where id = $id";
@@ -53,6 +75,7 @@ class BahanModel extends Model
         $array = $query->getResultArray();
         return $array;
     }
+
     public function ambil($column, $id)
     {
         $sql = "Select `$column` from bahan_kue where id = $id";
@@ -60,6 +83,7 @@ class BahanModel extends Model
         $array = $query->getResultArray();
         return $array;
     }
+
     public function search($keyword)
     {
         // $builder = $this->table('pasien');

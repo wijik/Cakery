@@ -11,7 +11,7 @@ class Artikel extends BaseController
         helper('date');
         $this->validation = \Config\Services::validation();
         $this->session = session();
-        $this->blogModel = new \App\Models\BlogModel();
+        $this->artikelModel = new \App\Models\ArtikelModel();
         $this->komentarModel = new \App\Models\KomentarModel();
         $this->kmnArtikel = new \App\Models\KomentarArtikelModel();
     }
@@ -19,9 +19,9 @@ class Artikel extends BaseController
     {
         $keyword = $this->request->getVar('keyword');
         if ($keyword) {
-            $artikel = $this->blogModel->search($keyword);
+            $artikel = $this->artikelModel->search($keyword);
         } else {
-            $artikel = $this->blogModel->findAll();
+            $artikel = $this->artikelModel->findAll();
         }
 
         $data = [
@@ -42,13 +42,13 @@ class Artikel extends BaseController
     }
     public function detail($slug)
     {
-        $artikel = $this->blogModel->cekSlug($slug);
-        $getId = $this->blogModel->select($slug);
+        $artikel = $this->artikelModel->cekSlug($slug);
+        $getId = $this->artikelModel->select($slug);
         $id = $getId[0]['id'];
         $data = [
             'artikel' => $artikel,
-            'latest' => $this->blogModel->findAll(3),
-            'komentar' => $this->kmnArtikel->where('id_blog', $id)->findAll(),
+            'latest' => $this->artikelModel->findAll(3),
+            'komentar' => $this->kmnArtikel->where('id_artikel', $id)->findAll(),
         ];
 
         return view('Artikel/detail', $data);

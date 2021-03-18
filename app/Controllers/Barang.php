@@ -19,6 +19,7 @@ class Barang extends BaseController
         $this->komentarModel = new \App\Models\KomentarModel();
         $this->dompetModel = new \App\Models\DompetModel();
         $this->userModel = new \App\Models\UserModel();
+        $this->detTransModel = new \App\Models\DetailTransaksiModel();
     }
     public function index()
     {
@@ -36,18 +37,12 @@ class Barang extends BaseController
         ];
         return view('Barang/index', $data);
     }
-    // public function category($id)
-    // {
-    //     $data = [
-    //         'kue' => $this->kueModel->where('id_jenis_kue', $id)->findAll(),
-    //         'jenis' => $this->jenisKueModel->findAll(),
-    //     ];
-    //     return view('Barang/index', $data);
-    // }
-    public function view($id)
+
+    public function view($slug)
     {
+        $id = $this->bahanModel->searchId($slug);
         $data = [
-            'bahan' => $this->bahanModel->find($id),
+            'bahan' => $this->bahanModel->getBarang($slug),
             'komentar' => $this->komentarModel->where('id_barang', $id)->findAll(),
         ];
 
@@ -105,23 +100,21 @@ class Barang extends BaseController
                 return redirect()->to('/barang/beli/' . $this->request->getPost('id_barang'))->withInput();
             }
 
-            $id_barang =  $this->request->getPost('id_barang');
-            $id_pembeli = $this->request->getPost('id_pembeli');
-            $created_date = date("Y-m-d H:i:s");
-            $created_by = $this->request->getPost('id_pembeli');
-            $total_harga = $this->request->getPost('total_harga');
-            $jumlah = $this->request->getPost('jumlah');
-            $alamat = $this->request->getPost('alamat');
-            $ongkir = $this->request->getPost('ongkir');
+            $id_barang      = $this->request->getPost('id_barang');
+            $id_pembeli     = $this->request->getPost('id_pembeli');
+            $created_date   = date("Y-m-d H:i:s");
+            $created_by     = $this->request->getPost('id_pembeli');
+            $total_harga    = $this->request->getPost('total_harga');
+            $jumlah         = $this->request->getPost('jumlah');
+            $alamat         = $this->request->getPost('alamat');
+            $ongkir         = $this->request->getPost('ongkir');
 
 
             $data = [
-                'id_barang' => $id_barang,
                 'id_pembeli' =>  $id_pembeli,
                 'created_date' => $created_date,
                 'created_by' => $created_by,
                 'total_harga' => $total_harga,
-                'jumlah' => $jumlah,
                 'alamat' => $alamat,
                 'ongkir' => $ongkir
             ];
@@ -157,40 +150,50 @@ class Barang extends BaseController
                 if ($simpan) {
                     // pdf invoice
                     $tranksaksi = $this->transModel->last();
-                    $pembeli = $this->userModel->find($tranksaksi[0]['id_pembeli']);
-                    $barang = $this->bahanModel->find($tranksaksi[0]['id_barang']);
+                    $id_trans = $tranksaksi[0]['id'];
 
-                    $invoice = [
-                        'transaksi' => $tranksaksi,
-                        'pembeli' => $pembeli,
-                        'barang' => $barang,
+                    $data = [
+                        'Id_transaksi' => $id_trans,
+                        'Id_barang' => $id_barang,
+                        'jumlah' => $jumlah
                     ];
 
-                    $html = view('Barang/invoice', $invoice);
+                    $save = $this->detTransModel->insert_detail($data);
 
-                    $pdf = new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
+                    // cek barang dalam suatu transaksi
+                    $barang = $this->detTransModel->cari($id_trans);
 
-                    $pdf->SetCreator(PDF_CREATOR);
-                    $pdf->SetAuthor('Dimas Bayu');
-                    $pdf->SetTitle('Invoice');
-                    $pdf->SetSubject('Invoice');
+                    // $invoice = [
+                    //     'transaksi' => $tranksaksi,
+                    //     'pembeli' => $pembeli,
+                    //     'barang' => $barang,
+                    // ];
 
-                    $pdf->setPrintHeader(false);
-                    $pdf->setPrintFooter(false);
+                    // $html = view('Barang/invoice', $invoice);
 
-                    $pdf->AddPage();
+                    // $pdf = new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
 
-                    $pdf->writeHTML($html, true, false, true, false, '');
-                    // kalo mau tampil pdf di browser
-                    $this->response->setContentType('application/pdf');
-                    if ($pdf->Output('Invoice.pdf', 'I')) {
-                        session()->setFlashdata('pesan', 'Barang dibeli.');
-                        return redirect()->to(base_url('/barang'));
-                    }
+                    // $pdf->SetCreator(PDF_CREATOR);
+                    // $pdf->SetAuthor('Dimas Bayu');
+                    // $pdf->SetTitle('Invoice');
+                    // $pdf->SetSubject('Invoice');
+
+                    // $pdf->setPrintHeader(false);
+                    // $pdf->setPrintFooter(false);
+
+                    // $pdf->AddPage();
+
+                    // $pdf->writeHTML($html, true, false, true, false, '');
+                    // // kalo mau tampil pdf di browser
+                    // $this->response->setContentType('application/pdf');
+                    // if ($pdf->Output('Invoice.pdf', 'I')) {
+                    //     session()->setFlashdata('pesan', 'Barang dibeli.');
+                    //     return redirect()->to(base_url('/barang'));
+                    // }
                 }
             }
         }
-        
+
         $id = $this->request->uri->getSegment(3);
 
         $model = $this->bahanModel->find($id);

@@ -12,6 +12,12 @@ class UserModel extends Model
     // protected $returnType = 'App\Entities\User';
     protected $useTimestamps = false;
 
+    public function customer($id)
+    {
+        $query = "SELECT * FROM customer WHERE UserId = '$id'";
+        return $this->db->query($query)->getRowArray();
+    }
+
     public function insert_user($data)
     {
         return $this->db->table($this->table)->insert($data);

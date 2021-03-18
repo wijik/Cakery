@@ -8,14 +8,14 @@ class Home extends BaseController
 	{
 		$this->session = session();
 		$this->bahanModel = new \App\Models\BahanModel();
-		$this->blogModel = new \App\Models\BlogModel();
+		$this->artikelModel = new \App\Models\ArtikelModel();
 	}
 	public function index()
 	{
 		$data = [
 			'bahan' => $this->bahanModel->findAll(),
 			'slide' => $this->bahanModel->findAll(3),
-			'artikel' => $this->blogModel->findAll(3),
+			'artikel' => $this->artikelModel->findAll(3),
 		];
 
 		return view('template/body', $data);

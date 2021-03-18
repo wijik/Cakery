@@ -8,17 +8,21 @@ class User extends BaseController
     {
         $this->validation = \Config\Services::validation();
         $this->session = session();
+        $this->customerModel = new \App\Models\CustomerModel();
         $this->userModel = new \App\Models\UserModel();
         $this->dompetModel = new \App\Models\DompetModel();
         $this->notifModel = new \App\Models\NotifModel();
     }
-    public function index($id)
+    public function index()
     {
+        $id = $this->session->get('id');
+        $customer = $this->userModel->customer($id);
         $uang = $this->dompetModel->select($id);
         $data = [
             'title' => "User",
             'user' => $this->userModel->find($id),
             'uang' => $uang,
+            'customer' => $customer
         ];
         return view('User/index', $data);
     }
@@ -37,11 +41,13 @@ class User extends BaseController
         $this->session->setFlashdata('pesan', 'Berhasil mengirim permintaan untuk di lakukan pengisian dana');
         return redirect()->to('/user/index/' . $this->session->get('id'));
     }
-    public function edit($id)
+    public function edit()
     {
+        $id = $this->session->get('id');
         $data = [
             'title' => "Edit User",
             'user' => $this->userModel->find($id),
+            'customer' => $this->customerModel->cari($id),
             'validation' => $this->validation,
         ];
         return view('User/edit', $data);
@@ -69,7 +75,19 @@ class User extends BaseController
                 'errors' => [
                     'required' => '{field} harus di isi'
                 ]
-            ]
+            ],
+            'alamat' => [
+                'rules' => 'required',
+                'errors' => [
+                    'required' => '{field} harus di isi'
+                ]
+            ],
+            'telepon' => [
+                'rules' => 'required',
+                'errors' => [
+                    'required' => '{field} harus di isi'
+                ]
+            ],
         ])) {
             return redirect()->to('/user/edit/' . $this->request->getVar('id'))->withInput();
         }
@@ -91,8 +109,15 @@ class User extends BaseController
         }
 
         $avatar = $namaAvatar;
+        $id = $this->session->get('id');
+        $customer = $this->customerModel->cari($id);
+        $id_customer = $customer['Id'];
         $username = $this->request->getPost('username');
         $email = $this->request->getPost('email');
+        $NamaLengkap = $this->request->getPost('NamaLengkap');
+        $telepon = $this->request->getPost('telepon');
+        $JenisKelamin = $this->request->getPost('JenisKelamin');
+        $Alamat = $this->request->getPost('alamat');
 
         $data = [
             'avatar' => $avatar,
@@ -102,11 +127,19 @@ class User extends BaseController
             'updated_date' => date("Y-m-d H:i:s"),
         ];
 
+        $update = [
+            'NamaLengkap' => $NamaLengkap,
+            'Telepon' => $telepon,
+            'JenisKelamin' => $JenisKelamin,
+            'Alamat' => $Alamat
+        ];
+
+        $ubahCustomer = $this->customerModel->update_customer($update, $id_customer);
         $ubah = $this->userModel->update_user($data, $id);
 
         if ($ubah) {
             session()->setFlashdata('pesan', 'Data berhasil di ubah.');
-            return redirect()->to(base_url('/user/' . $this->session->get('id')));
+            return redirect()->to(base_url('/user'));
         }
     }
 }

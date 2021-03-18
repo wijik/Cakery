@@ -81,10 +81,12 @@ class Auth extends BaseController
                         'username' => $user['username'],
                         'id' => $user['id'],
                         'role' => $user['role'],
+                        'sessionExpiration' => 2678400,
                         'isLoggedIn' => TRUE
                     ];
 
                     $this->session->set($sessData);
+                    // $this->session->sess_expiration = 2678400;
 
                     if ($user['role'] == 0) {
                         return redirect()->to(site_url('dashboard'));

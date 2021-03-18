@@ -11,7 +11,7 @@ class Komentar extends BaseController
         $this->session = session();
         $this->komentarModel = new \App\Models\KomentarModel();
         $this->kmnArtikel = new \App\Models\KomentarArtikelModel();
-        $this->blogModel = new \App\Models\BlogModel();
+        $this->artikelModel = new \App\Models\ArtikelModel();
         $this->bahanModel = new \App\Models\BahanModel();
     }
 
@@ -31,23 +31,26 @@ class Komentar extends BaseController
         ];
         $simpan = $this->komentarModel->insert_komentar($data);
 
+        $bahan = $this->bahanModel->find($id);
+        $slug = $bahan['slug'];
+
         if ($simpan) {
             session()->setFlashdata('pesan', 'Komentar berhasil di tambahkan');
-            return redirect()->to(base_url('/barang/view/' . $id_barang));
+            return redirect()->to(base_url('/barang/' . $slug));
         }
     }
     public function komen($id)
     {
-        $getId = $this->blogModel->find($id);
+        $getId = $this->artikelModel->find($id);
         $slug = $getId['slug'];
         $id_user = $this->session->get('id');
-        $id_blog = $id;
+        $id_artikel = $id;
         $komentar = $this->request->getPost('komentar');
         $created_by = $this->session->get('id');
 
         $data = [
             'id_user' => $id_user,
-            'id_blog' => $id_blog,
+            'id_artikel' => $id_artikel,
             'komentar' => $komentar,
             'created_date' => date("Y-m-d H:i:s"),
         ];
@@ -59,21 +62,16 @@ class Komentar extends BaseController
     }
     public function delete($id)
     {
-        $id_blog = $this->request->getVar('blog');
-        $getBlog = $this->blogModel->find($id_blog);
-        $slug = $getBlog['slug'];
+        $slug = $this->request->getVar('artikel');
         $this->kmnArtikel->delete($id);
         session()->setFlashdata('pesan', 'Komentar Berhasil di hapus');
         return redirect()->to('/artikel/' . $slug);
     }
     public function deleteKmn($id)
     {
-        $barang = $this->request->getVar('barang');
-        $getBarang = $this->bahanModel->find($barang);
-        $id_barang = $getBarang['id'];
-
+        $slug = $this->request->getVar('artikel');
         $this->komentarModel->delete($id);
         session()->setFlashdata('pesan', 'Komentar Berhasil di hapus');
-        return redirect()->to('/barang/view/' . $id_barang);
+        return redirect()->to('/barang/' . $slug);
     }
 }

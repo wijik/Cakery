@@ -54,15 +54,17 @@ $routes->group('', ['filter' => 'auth'], function ($routes) {
 
 	$routes->get('/artikel/(:any)', 'Artikel::detail/$1');
 
-	$routes->get('/user/(:segment)', 'User::index/$1');
-	$routes->get('/user/edit/(:num)', 'User::edit/$1');
+	$routes->get('/user/', 'User::index');
+	$routes->get('/user/edit', 'User::edit');
 
 	$routes->post('/cart/create/(:segment)', 'Cart::create/$1');
-	$routes->get('/cart/index/(:num)', 'Cart::index/$1');
-	$routes->delete('/cart/delete/', 'Cart::delete/$1');
+	$routes->get('/cart', 'Cart::index');
+	$routes->post('/cart/update/(:num)', 'Cart::update/$1');
+	$routes->delete('/cart/remove/', 'Cart::delete/$1');
 
 	$routes->get('/transaksi', 'Transaksi::index');
 	$routes->post('/komentar/create/(:segment)', 'Komentar::create/$1');
+	$routes->delete('/komentar/delete/(:num)', 'Komentar::delete/$1');
 
 	$routes->get('bahan', 'Bahan::index');
 	$routes->get('bahan/create', 'Bahan::create');
@@ -76,7 +78,7 @@ $routes->group('', ['filter' => 'auth'], function ($routes) {
 	// $routes->post('/JenisKue/save', 'JenisKue::save');
 	// $routes->delete('JenisKue/delete', 'JenisKue::delete/$1');
 
-	$routes->get('/barang/view/(:segment)', 'Barang::view/$1');
+	$routes->get('/barang/(:segment)', 'Barang::view/$1');
 	$routes->get('/kue/view/(:segment)', 'Kue::view/$1');
 	$routes->get('/JenisKue/view/(:segment)', 'JenisKue::view/$1');
 });

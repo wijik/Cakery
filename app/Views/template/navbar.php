@@ -23,7 +23,7 @@ $session = session();
                             <li class="drop"><a href="/barang">Shop</a>
                             </li>
                             <?php if (session()->isLoggedIn) : ?>
-                                <li class="drop"><a href="/cart/index/<?= $session->get('id'); ?>">Cart</a>
+                                <li class="drop"><a href="/cart">Cart</a>
                                 </li>
                             <?php endif ?>
                         </ul>
@@ -58,7 +58,7 @@ $session = session();
                                         <li><a href="login-register.html">login & register</a></li>
                                     </ul>
                                 </li>
-                                <li><a href="/cart/view/<?= $session->get('id'); ?>">Cart</a></li>
+                                <li><a href="/cart/">Cart</a></li>
                             </ul>
                         </nav>
                     </div>
@@ -67,7 +67,7 @@ $session = session();
                 <div class="col-md-2 col-sm-4 col-xs-3">
                     <ul class="menu-extra">
                         <?php if (session()->isLoggedIn) : ?>
-                            <li class="drop"><a href="/user/<?= session()->get('id'); ?>"><?= session()->get('username'); ?></a></li>
+                            <li class="drop"><a href="/user"><?= session()->get('username'); ?></a></li>
                             <ul class="dropdown">
                                 <li><a href="<?= site_url('auth/logout'); ?>">Logout</a></li>
                             </ul>

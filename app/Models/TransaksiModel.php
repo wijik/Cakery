@@ -30,4 +30,9 @@ class TransaksiModel extends Model
         $array = $query->getResultArray();
         return $array;
     }
+    public function cariBarang($id)
+    {
+        $query = "SELECT * FROM detail_transaksi WHERE Id_transaksi = '$id'";
+        return $this->db->query($query)->getRowArray();
+    }
 }

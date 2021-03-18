@@ -81,12 +81,12 @@
                                                     <p style="margin-top:20px;display:inline-block;width:max-content;margin-left:-45px;"><?= date("d M Y", strtotime($k['created_date'])); ?></p>
                                                 </div>
                                             </div>
-                                            <p class="komentar"><?= $k['komentar']; ?></p>
+                                            <p><?= $k['komentar']; ?></p>
                                         </div>
                                         <?php if ($k['id_user'] == session()->get('id')) : ?>
                                             <form action="/komentar/delete/<?= $k['id']; ?>" method="POST">
                                                 <?= csrf_field(); ?>
-                                                <input type="hidden" name="blog" value="<?= $artikel['id']; ?>">
+                                                <input type="hidden" name="artikel" value="<?= $artikel['slug']; ?>">
                                                 <input type="hidden" name="_method" value="DELETE">
                                                 <button type="submit" class="btn-delete-kmn" onclick="return confirm('apakah anda yakin ingin mengahpus komentar ini?');">Hapus komentar</button>
                                             </form>

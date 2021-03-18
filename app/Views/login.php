@@ -48,7 +48,7 @@
 	$errors = $session->getFlashdata('errors');
 	?>
 	<div class="limiter">
-		<div class="container-login100" style="background-image: url('<?= base_url('login/images/bg-01.jpg'); ?>');">
+		<div class="container-login100" style="background-image: url('<?= base_url('images/bg/2.jpg'); ?>');">
 			<div class="wrap-login100 p-l-110 p-r-110 p-t-62 p-b-33">
 				<form class="login100-form validate-form flex-sb flex-w" action="<?= site_url('Auth/login'); ?>" method="POST">
 					<span class="login100-form-title p-b-53">

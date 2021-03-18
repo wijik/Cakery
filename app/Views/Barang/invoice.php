@@ -20,14 +20,14 @@
     <p>
         <i>Cakery</i><br>
         Jakarta, Indonesia <br>
-        088802020831
+        088218908343
     </p>
     <hr>
     <p>
         Pembeli : <?= $pembeli['username']; ?><br>
-        Alamat : <?= $transaksi[0]['alamat']; ?> <br>
-        Transaksi No.: <?= $transaksi[0]['id']; ?><br>
-        Tanggal : <?= date("Y-m-d", strtotime($transaksi[0]['created_date'])); ?>
+        Alamat : <?= $transaksi['alamat']; ?> <br>
+        Transaksi No.: <?= $transaksi['id']; ?><br>
+        Tanggal : <?= date("Y-m-d", strtotime($transaksi['created_date'])); ?>
     </p>
     <table cellpadding="6">
         <tr>
@@ -37,13 +37,22 @@
             <th><strong>Ongkir</strong></th>
             <th><strong>Total harga</strong></th>
         </tr>
-        <tr>
-            <td><?= $barang['nama_barang']; ?></td>
-            <td><?= "Rp. " . number_format($barang['harga'], 2, ',', '.'); ?></td>
-            <td><?= $transaksi[0]['jumlah']; ?></td>
-            <td><?= "Rp. " . number_format($transaksi[0]['ongkir'], 2, ',', '.'); ?></td>
-            <td><?= "Rp. " . number_format($transaksi[0]['total_harga'], 2, ',', '.'); ?></td>
-        </tr>
+        <?php foreach ($barang as  $b) : ?>
+            <?php
+            $bahan = new \App\Models\BahanModel();
+            // $detail = new \App\Models\DetailTransaksiModel();
+            // $jumlah = $detail->find($b['Id_transaksi'])['jumlah'];
+            $nama_barang = $bahan->find($b['Id_barang'])['nama_barang'];
+            $harga_satuan = $bahan->find($b['Id_barang'])['harga'];
+            ?>
+            <tr>
+                <td><?= $nama_barang; ?></td>
+                <td><?= "Rp. " . number_format($harga_satuan, 2, ',', '.'); ?></td>
+                <td><?= $b['jumlah']; ?></td>
+                <td><?= "Rp. " . number_format($transaksi['ongkir'], 2, ',', '.'); ?></td>
+                <td><?= "Rp. " . number_format($transaksi['total_harga'], 2, ',', '.'); ?></td>
+            </tr>
+        <?php endforeach ?>
     </table>
 </body>
 

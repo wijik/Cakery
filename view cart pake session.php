@@ -29,57 +29,49 @@
             <div class="col-md-12 col-sm-12 col-xs-12">
                 <form action="#">
                     <div class="table-content table-responsive">
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th class="product-thumbnail">Gambar</th>
-                                    <th class="product-name">Produk</th>
-                                    <th class="product-price">Harga</th>
-                                    <th class="product-quantity">Jumlah</th>
-                                    <th class="product-remove">Aksi</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <?php if (!$cart) : ?>
-                                    <td colspan="6" style="font-size: 30px; margin-bottom:5px;">Kamu belum memasukan barang ke keranjang, <a href="/barang" class="buttons-cart">Beli</a></td>
-                                <?php endif ?>
-                                <?php foreach ($cart as $c) : ?>
-                                    <tr id="cart-row">
-
-                                        <?php
-                                        $bahanModel = new \App\Models\BahanModel();
-                                        $gambar = $bahanModel->find($c['id_barang'])['gambar'];
-                                        $nama_barang = $bahanModel->find($c['id_barang'])['nama_barang'];
-                                        $harga = $bahanModel->find($c['id_barang'])['harga'];
-                                        $jumlah = $bahanModel->find($c['id_barang'])['stok'];
-                                        ?>
-                                        <td class="product-thumbnail"><a href="#"><img src="/uploads/<?= $gambar; ?>" alt=""></a></td>
-                                        <td class="product-name"><?= $nama_barang; ?></td>
-                                        <td class="product-price"><span class="amount"><?= "Rp." . number_format($harga, 0, 0, '.'); ?></span></td>
-                                        <form action="/cart/update/<?= $c['id']; ?>" method="POST">
-                                            <td class="product-quantity">
-                                                <input type="number" name="jumlah" min="1" max="<?= $jumlah; ?>" value="<?= $c['jumlah']; ?>">
-                                            </td>
-                                            <td class="product-remove">
-                                                <button type="submit" class="btn-edit"><span class="ti-pencil"></span></button>
-                                        </form>
-                                        <form method="POST" action="/cart/delete/<?= $c['id']; ?>" method="POST">
-                                            <?= csrf_field(); ?>
-                                            <input type="hidden" name="_method" value="DELETE">
-                                            <button type="submit" class="btn-delete" onclick="return confirm('apakah anda yakin ingin mengahpus <?= $nama_barang; ?>?');">X</button>
-                                        </form>
-                                        </td>
+                        <form action="cart/update">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th class="product-thumbnail">Gambar</th>
+                                        <th class="product-name">Produk</th>
+                                        <th class="product-price">Harga</th>
+                                        <th class="product-quantity">Jumlah</th>
+                                        <th class="product-remove" colspan="2">Action</th>
                                     </tr>
-                                <?php endforeach ?>
-                            </tbody>
-                        </table>
+                                </thead>
+                                <tbody>
+                                    <?php if (count($items) == 0) : ?>
+                                        <td colspan="6" style="font-size: 30px; margin-bottom:5px;">Kamu belum memasukan barang ke keranjang, <a href="/barang" class="buttons-cart">Beli</a></td>
+                                    <?php endif ?>
+                                    <?php if (count($items) != 0) : ?>
+                                        <?php foreach ($items as $key => $item) : ?>
+                                            <tr id="cart-row">
+                                                <td class="product-thumbnail"><a href="#"><img src="/uploads/<?= $item['photo']; ?>" alt=""></a></td>
+                                                <td class="product-name"><?= $item['name']; ?></td>
+                                                <td class="product-price"><span class="amount"><?= "Rp." . number_format($item['price'], 0, 0, '.'); ?></span></td>
+                                                <td class="product-quantity">
+                                                    <input type="number" name="quantity[]" min="1" value="<?= $item['quantity']; ?>">
+                                                </td>
+                                                <td class="product-remove">
+                                                    <button type="submit" class="btn-edit"><span class="ti-pencil"></span></button>
+                                                </td>
+                                                <td class="product-remove">
+                                                    <a href="cart/delete/<?= $item['id']; ?>" class="btn-edit" onclick="return confirm('Apakah Anda yakin ingin menghapus <?= $item['name']; ?> dari keranjang belanja?')">X</a>
+                                                </td>
+                                            </tr>
+                                        <?php endforeach ?>
+                                    <?php endif ?>
+                                </tbody>
+                            </table>
+                        </form>
                     </div>
                     <div class="row">
                         <div class="col-md-8 col-sm-7 col-xs-12">
                             <div class="buttons-cart">
                                 <a href="/barang">Lanjut Belanja</a>
                             </div>
-                            <?php if ($cart) : ?>
+                            <?php if (count($items) != 0) : ?>
                                 <section class="our-checkout-area ptb--120 bg__white">
                                     <div class="container">
                                         <div class="row">
@@ -124,7 +116,6 @@
                                                                     <input type="text" placeholder="Total harga" name="total_harga" id="total_harga" readonly style="width: 100%;">
                                                                 </div>
                                                                 <div class="single-checkout-box">
-                                                                    <label for="Alamat">Alamat</label><br>
                                                                     <textarea name="alamat" id="alamat" placeholder="Alamat"></textarea>
                                                                 </div>
                                                                 <div class="single-checkout-box">

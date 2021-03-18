@@ -116,6 +116,7 @@ class Bahan extends BaseController
         // dd($gambar);
 
         $nama_barang = $this->request->getPost('nama_barang');
+        $slug = url_title($this->request->getVar('nama_barang'), '-', true);
         $gambar = $namaGambar;
         $deskripsi = $this->request->getPost('deskripsi');
         $harga = $this->request->getPost('harga');
@@ -123,6 +124,7 @@ class Bahan extends BaseController
 
         $data = [
             'nama_barang' => $nama_barang,
+            'slug' => $slug,
             'gambar' => $gambar,
             'deskripsi' => $deskripsi,
             'harga' => $harga,
@@ -201,6 +203,7 @@ class Bahan extends BaseController
         }
 
         $nama_barang = $this->request->getPost('nama_barang');
+        $slug = url_title($this->request->getVar('nama_barang'), '-', true);
         $gambar = $namaGambar;
         $deskripsi = $this->request->getPost('deskripsi');
         $harga = $this->request->getPost('harga');
@@ -208,6 +211,7 @@ class Bahan extends BaseController
 
         $data = [
             'nama_barang' => $nama_barang,
+            'slug' => $slug,
             'gambar' => $gambar,
             'deskripsi' => $deskripsi,
             'harga' => $harga,

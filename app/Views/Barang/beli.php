@@ -59,13 +59,8 @@ $session = session();
                             <div class="single-checkout-box">
                                 <strong>Estimasi : <span id="estimasi"></span></strong>
                             </div><br>
-                            <form action="/barang/beli" method="POST">
-                                <input type="hidden" name="id_barang" id="id_barang" value="<?= $model['id']; ?>">
-                                <input type="hidden" name="id_pembeli" id="id_pembeli" value="<?= $session->get('id'); ?>">
-                                <div class="single-checkout-box">
-                                    <label for="jumlah_pembelian">Jumlah Pembelian</label>
-                                    <input type="number" name="jumlah" id="jumlah" class="form-control" placeholder="Jumlah Pembelian" style="width: 100%;" value="1" min="1" max="<?= $model['stok']; ?>">
-                                </div><br>
+                            <form action="/cart/beli" method="POST">
+                                <input type="hidden" name="id_pembeli" id="id_pembeli" value="<?= session()->get('id'); ?>">
                                 <div class="single-checkout-box">
                                     <label for="ongkir">Ongkir</label><br>
                                     <input type="text" placeholder="Ongkir" name="ongkir" id="ongkir" readonly style="width: 100%;">
@@ -75,11 +70,10 @@ $session = session();
                                     <input type="text" placeholder="Total harga" name="total_harga" id="total_harga" readonly style="width: 100%;">
                                 </div>
                                 <div class="single-checkout-box">
-                                    <label for="alamat">Alamat</label><br>
                                     <textarea name="alamat" id="alamat" placeholder="Alamat"></textarea>
                                 </div>
                                 <div class="single-checkout-box">
-                                    <input type="submit" name="submit" id="submit" value="Beli" class="btn btn-light" style="width: 100%;">
+                                    <input type="submit" name="submit" id="submit" value="Beli" class="btn-dana" style="width: 100%;">
                                 </div>
                             </form>
                         </div>
@@ -155,6 +149,7 @@ $session = session();
         $("#provinsi").on('change', function() {
             $("#kabupaten").empty();
             var id_province = $(this).val();
+            console.log(id_province);
             $.ajax({
                 url: "<?= site_url('barang/getCity'); ?>",
                 type: 'GET',

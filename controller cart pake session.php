@@ -2,6 +2,7 @@
 
 namespace App\Controllers;
 
+use Wildanfuady\WFcart\WFcart;
 
 class Cart extends BaseController
 {
@@ -10,97 +11,78 @@ class Cart extends BaseController
     public function __construct()
     {
         $this->session = session();
+        $this->cart = new WFcart();
         $this->cartModel = new \App\Models\CartModel();
         $this->bahanModel = new \App\Models\BahanModel();
         $this->transaksiModel = new \App\Models\TransaksiModel();
         $this->dompetModel = new \App\Models\DompetModel();
-        $this->detaiTransaksilModel = new \App\Models\DetailTransaksiModel();
     }
 
     public function index()
     {
-        $id = $this->session->get('id');
-        $total = 0;
-        $cart = $this->cartModel->where('id_user', $id)->findAll();
-        foreach ($cart as $c) {
-            $total += $this->bahanModel->find($c['id_barang'])['harga'] * $c['jumlah'];
-        }
-
-        $result = array();
-        foreach ($cart as $key => $val) {
-            $result[] = array(
-                'id_barang' => $cart[$key]['id_barang'],
-                'id_user' => $cart[$key]['id_user'],
-                'jumlah' => $cart[$key]['jumlah'],
-            );
-        }
-
-
         $provinsi = $this->rajaongkir('province');
 
         $data = [
-            'cart' => $cart,
-            'total' => $total,
+            'items' => $this->cart->totals(),
+            'total' => $this->cart->count_totals(),
             'provinsi' => json_decode($provinsi)->rajaongkir->results,
-            'result' => $result,
         ];
 
         return view('Barang/cart', $data);
     }
 
-    public function edit($id)
-    {
-        $cart = $this->cartModel->where('id', $id)->first();
-        $data = [
-            'title' => 'Update Cart',
-            'cart' => $cart
-        ];
-        return view('Barang/edit', $data);
-    }
-
     public function update($id)
     {
-        $jumlah = $this->request->getPost('jumlah');
-        $input = [
-            'jumlah' => $jumlah,
-            'id' => $id
-        ];
-        dd($input);
-        // $ubah = $this->cartModel->update_cart($input, $id);
-        // if ($ubah) {
-        //     session()->setFlashdata('pesan', 'Cart berhasil di ubah.');
-        //     return redirect()->to('/cart');
-        // }
+        $this->cart->update();
+        return redirect()->to('/cart');
     }
 
-    public function create($id)
+    public function create($id = null)
     {
         if (!$this->session->isLoggedIn) {
             session()->setFlashdata('pesan', 'Login terlebih dahulu untuk memasukan barang');
             return redirect()->to('/auth/login');
         }
-        // $kue = $this->kueModel->find($id);
-        $id_user = $this->session->get('id');
-        $id_barang = $this->request->uri->getSegment(3);
-        $jumlah = $this->request->getPost('jumlah');
 
-        $data = [
-            'id_user' => $id_user,
-            'id_barang' => $id_barang,
-            'jumlah ' => $jumlah
-        ];
+        // cari product berdasarkan id
+        $product = $this->bahanModel->getProduct($id);
+        // cek data product
+        if ($product != null) { // jika product tidak kosong
 
-        $simpan = $this->cartModel->insert_cart($data);
-
-        if ($simpan) {
-            session()->setFlashdata('pesan', 'Berhasil di tambahkan ke keranjang');
-            return redirect()->to('/cart');
+            // buat variabel array untuk menampung data product
+            $item = [
+                'id'            => $product['id'],
+                'name'          => $product['nama_barang'],
+                'price'         => $product['harga'],
+                'photo'         => $product['gambar'],
+                'quantity'      => $this->request->getPost('jumlah'),
+            ];
+            // tambahkan product ke dalam cart
+            $this->cart->add_cart($id, $item);
+            // tampilkan nama product yang ditambahkan
+            $nama = $item['name'];
+            // success flashdata
+            session()->setFlashdata('pesan', "Berhasil memasukan {$nama} ke karanjang belanja");
+        } else {
+            // error flashdata
+            session()->setFlashdata('error', "Tidak dapat menemukan data product");
         }
+        return redirect()->to('/barang');
     }
-    public function delete($id)
+    public function delete($id = null)
     {
-        $this->cartModel->delete($id);
-        session()->setFlashdata('pesan', 'Barang Berhasil di hapus');
+        // cari product berdasarkan id
+        $product = $this->bahanModel->getProduct($id);
+        // cek data product
+        if ($product != null) { // jika product tidak kosong
+            // hapus keranjang belanja berdasarkan id
+            $this->cart->remove($id);
+            // success flashdata
+            session()->setFlashdata('success', "Berhasil menghapus product dari keranjang belanja");
+        } else { // product tidak ditemukan
+            // error flashdata
+            session()->setFlashdata('error', "Tidak dapat menemukan data product");
+        }
         return redirect()->to('/cart');
     }
 
@@ -113,25 +95,19 @@ class Cart extends BaseController
         $total_harga = $this->request->getPost('total_harga');
         $alamat = $this->request->getPost('alamat');
 
-        // $result = array();
-        // foreach ($cart as $key => $val) {
-        //     $result[] = array(
-        //         'id_pembeli' => $cart[$key]['id_user'],
-        //         'created_date' => date("Y-m-d H:i:s"),
-        //         'created_by' => $this->session->get('id'),
-        //         'ongkir' => $ongkir,
-        //         'total_harga' => $total_harga,
-        //         'alamat' => $alamat,
-        //     );
-        // }
-        $result = [
-            'id_pembeli' => $id,
-            'created_date' => date("Y-m-d H:i:s"),
-            'created_by' => $this->session->get('id'),
-            'ongkir' => $ongkir,
-            'total_harga' => $total_harga,
-            'alamat' => $alamat,
-        ];
+        $result = array();
+        foreach ($cart as $key => $val) {
+            $result[] = array(
+                'id_barang' => $cart[$key]['id_barang'],
+                'id_pembeli' => $cart[$key]['id_user'],
+                'jumlah' => $cart[$key]['jumlah'],
+                'created_date' => date("Y-m-d H:i:s"),
+                'created_by' => $this->session->get('id'),
+                'ongkir' => $ongkir,
+                'total_harga' => $total_harga,
+                'alamat' => $alamat,
+            );
+        }
 
         $ambil = $this->dompetModel->select($this->session->get('id'));
         $money = $ambil[0]['jumlah'];
@@ -140,17 +116,18 @@ class Cart extends BaseController
             return redirect()->to('/cart/index/' . $this->session->get('id'))->withInput();
         } else {
             // kurangi uang user
+            $total_harga = $result[$key]['total_harga'];
             $getUang = $this->dompetModel->select($this->session->get('id'));
             $uang = $getUang[0]['jumlah'];
             $jumlah = $uang - $total_harga;
             $this->dompetModel->beli($jumlah, $this->session->get('id'));
 
             //kurangi stok barang
-            // $jumlahPemesanan = $detail[$key]['jumlah'];
-            // $getBarang = $this->bahanModel->select($detail[$key]['id_barang']);
-            // $stokBarang = $getBarang[0]['stok'];
-            // $kurang = $stokBarang - $jumlahPemesanan;
-            // $this->bahanModel->stok($kurang, $detail[$key]['id_barang']);
+            $jumlahPemesanan = $result[$key]['jumlah'];
+            $getBarang = $this->bahanModel->select($result[$key]['id_barang']);
+            $stokBarang = $getBarang[0]['stok'];
+            $kurang = $stokBarang - $jumlahPemesanan;
+            $this->bahanModel->stok($kurang, $result[$key]['id_barang']);
 
             // tambah uang ke user
             $getAdmin = $this->dompetModel->select(14);
@@ -158,21 +135,9 @@ class Cart extends BaseController
             $balik = $uangAdmin + $total_harga;
             $this->dompetModel->balik($balik);
 
-            $input = $this->transaksiModel->insert_trans($result);
+            $input = $this->transaksiModel->insertBatch($result);
 
             if ($input) {
-                $tranksaksi = $this->transaksiModel->last();
-                $id_trans = $tranksaksi[0]['id'];
-
-                $detail = array();
-                foreach ($cart as $key => $val) {
-                    $detail[] = array(
-                        'Id_transaksi' => $id_trans,
-                        'Id_barang' => $cart[$key]['id_barang'],
-                        'jumlah' => $cart[$key]['jumlah'],
-                    );
-                }
-                $masuk = $this->detaiTransaksilModel->insertBatch($detail);
                 $hapus = $this->cartModel->select("id", $id);
                 $delete = $this->cartModel->delete($hapus);
                 session()->setFlashdata('pesan', 'Berhasil Membeli barang');

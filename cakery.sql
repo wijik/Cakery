@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Feb 01, 2021 at 01:01 PM
+-- Generation Time: Feb 08, 2021 at 03:32 AM
 -- Server version: 10.4.14-MariaDB
 -- PHP Version: 7.4.10
 
@@ -146,8 +146,7 @@ INSERT INTO `dompet` (`id`, `id_user`, `jumlah`, `created_date`, `created_by`, `
 (3, 22, 24000, '2020-11-06 14:56:15', 14, '2020-11-07 20:31:28', 14),
 (4, 14, 8449000, '2020-11-06 06:58:07', 14, '0000-00-00 00:00:00', 0),
 (6, 23, 5000, '2020-11-09 18:00:16', 14, '2020-11-09 23:42:46', 14),
-(7, 24, 55000, '2021-01-12 09:46:31', 14, '2021-01-11 21:12:39', 14),
-(17, 56, 50000, '2021-01-13 00:03:49', 0, '0000-00-00 00:00:00', 0);
+(7, 24, 55000, '2021-01-12 09:46:31', 14, '2021-01-11 21:12:39', 14);
 
 -- --------------------------------------------------------
 
@@ -186,8 +185,8 @@ CREATE TABLE `komentar_artikel` (
   `id_user` int(11) NOT NULL,
   `id_blog` int(11) NOT NULL,
   `komentar` text NOT NULL,
-  `created_date` datetime NOT NULL,
-  `updated_date` datetime NOT NULL
+  `created_date` datetime NOT NULL DEFAULT current_timestamp(),
+  `updated_date` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
@@ -393,8 +392,7 @@ INSERT INTO `user` (`id`, `username`, `password`, `email`, `salt`, `avatar`, `ro
 (17, 'Robbi', '47187d63f94732e72714a91bad07d5ed', 'dimasbayu080103@gmail.com', '5f912d7be22792.64605728', 'user.jpeg', 1, 0, '2020-10-22 01:58:03', NULL, NULL),
 (22, 'brian', 'acaf06a9da08c71d2b9b85713c7794e7', 'dimasbayu080103@gmail.com', '5f9a101b4780c9.21326150', '1605019247_55434613cbce45c26d38.png', 1, 0, '2020-10-28 19:43:07', 22, '2020-11-10 08:40:47'),
 (23, 'rizki', '49626fbd6fa89a72806fa3cb7266cd00', 'dimasbayu080103@gmail.com', '5fa81c4dee91f4.23557840', '1605019247_55434613cbce45c26d38.png', 1, 0, '2020-11-08 10:26:53', 23, '2020-11-10 08:05:19'),
-(24, 'rijal', 'd8403c20830ca6693b62ac51768d6e27', 'rijal@gmail.com', '5ff80993ed5bf8.42938738', 'default.png', 1, 0, '2021-01-08 01:28:19', NULL, NULL),
-(56, 'anjay', 'dff090e7aeb1522eadd63eef185bcc5f', 'anjay@gmail.com', '5ffe8d450676c6.67830910', 'default.png', 1, 0, '2021-01-13 00:03:49', NULL, NULL);
+(24, 'rijal', 'd8403c20830ca6693b62ac51768d6e27', 'rijal@gmail.com', '5ff80993ed5bf8.42938738', 'default.png', 1, 0, '2021-01-08 01:28:19', NULL, NULL);
 
 --
 -- Triggers `user`
@@ -412,6 +410,18 @@ DELIMITER ;
 DELIMITER $$
 CREATE TRIGGER `hapusDompet` AFTER DELETE ON `user` FOR EACH ROW BEGIN
     DELETE FROM dompet WHERE id_user = old.id;
+END
+$$
+DELIMITER ;
+DELIMITER $$
+CREATE TRIGGER `hapusKomentar` AFTER DELETE ON `user` FOR EACH ROW BEGIN
+    DELETE FROM komentar WHERE id_user = old.id;
+END
+$$
+DELIMITER ;
+DELIMITER $$
+CREATE TRIGGER `hapusKomentarArtikel` AFTER DELETE ON `user` FOR EACH ROW BEGIN
+    DELETE FROM komentar_artikel WHERE id_user = old.id;
 END
 $$
 DELIMITER ;
@@ -529,13 +539,13 @@ ALTER TABLE `dompet`
 -- AUTO_INCREMENT for table `komentar`
 --
 ALTER TABLE `komentar`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=36;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=37;
 
 --
 -- AUTO_INCREMENT for table `komentar_artikel`
 --
 ALTER TABLE `komentar_artikel`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
 
 --
 -- AUTO_INCREMENT for table `log_barang`

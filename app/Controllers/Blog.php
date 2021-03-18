@@ -8,7 +8,7 @@ class Blog extends BaseController
     {
         $this->validation = \Config\Services::validation();
         $this->session = session();
-        $this->blogModel = new \App\Models\BlogModel();
+        $this->blogModel = new \App\Models\ArtikelModel();
         $this->userModel = new \App\Models\UserModel();
     }
     public function index()

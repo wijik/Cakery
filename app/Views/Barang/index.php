@@ -45,13 +45,13 @@
                             <div class="product foo" data-sr-id="1" style=" visibility: visible;  -webkit-transform: translateY(0) scale(1); opacity: 1;transform: translateY(0) scale(1); opacity: 1;-webkit-transition: -webkit-transform 0.8s cubic-bezier(0.6, 0.2, 0.1, 1) 0s, opacity 0.8s cubic-bezier(0.6, 0.2, 0.1, 1) 0s; transition: transform 0.8s cubic-bezier(0.6, 0.2, 0.1, 1) 0s, opacity 0.8s cubic-bezier(0.6, 0.2, 0.1, 1) 0s; ">
                                 <div class="product__inner">
                                     <div class="pro__thumb">
-                                        <a href="#">
+                                        <a href="/barang/<?= $b['slug']; ?>">
                                             <img src="/uploads/<?= $b['gambar']; ?>" alt="product images" class="img-view">
                                         </a>
                                     </div>
                                     <div class="product__hover__info">
                                         <ul class="product__action">
-                                            <li><a title="Lihat Barang" class="quick-view modal-view detail-link" href="/barang/view/<?= $b['id']; ?>"><span class="ti-plus"></span></a></li>
+                                            <li><a title="Lihat Barang" class="quick-view modal-view detail-link" href="/barang/<?= $b['slug']; ?>"><span class="ti-eye"></span></a></li>
                                             <!-- <li><a title="Add TO Cart" href="cart.html"><span class="ti-shopping-cart"></span></a></li>
                                             <li><a title="Wishlist" href="wishlist.html"><span class="ti-heart"></span></a></li> -->
                                         </ul>

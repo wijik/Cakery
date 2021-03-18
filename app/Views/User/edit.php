@@ -39,12 +39,12 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="Avatar" class="form-control-label" style="float:left;">Avatar</label><br>
+                    <label for="Avatar" class="form-control-label">Avatar</label><br>
                     <div class="row">
-                        <div class="col-lg-6">
-                            <img src="/uploads/<?= $user['avatar']; ?>" alt="" class="img-thumbnail img-preview" style="width: 500px;height:300px;">
+                        <div class="col-lg-4">
+                            <img src="/uploads/<?= $user['avatar']; ?>" alt="" class="gambar" style="height: 300px; width:300px">
                         </div>
-                        <div class="col-lg-6">
+                        <div class="col-lg-8">
                             <div class="custom-file mb-3">
                                 <input type="file" class="form-control <?= ($validation->hasError('avatar')) ? 'is-invalid' : ''; ?>" id="avatar" id="avatar" name="avatar" onchange="previewAvatar()" value="<?= (old('avatar')) ? old('avatar') : $user['avatar'] ?>">
                                 <label class="custom-file-label" for="avatar">Pilih Gambar</label>
@@ -53,6 +53,38 @@
                                 </div>
                             </div>
                         </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="email">Nama Lengkap</label>
+                    <input type="text" class="form-control <?= ($validation->hasError('NamaLengkap')) ? 'is-invalid' : ''; ?>" id="NamaLengkap" name="NamaLengkap" value="<?= (old('NamaLengkap')) ? old('NamaLengkap') : $customer['NamaLengkap'] ?>">
+                    <div class=" invalid-feedback">
+                        <?= $validation->getError('NamaLengkap'); ?>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="email">No. Telepon</label>
+                    <input type="text" class="form-control <?= ($validation->hasError('telepon')) ? 'is-invalid' : ''; ?>" id="telepon" name="telepon" value="<?= (old('telepon')) ? old('telepon') : $customer['Telepon'] ?>">
+                    <div class=" invalid-feedback">
+                        <?= $validation->getError('telepon'); ?>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="email">Jenis Kelamin</label><br>
+                    <input class="form-check-input" type="radio" name="JenisKelamin" id="Jenis_Kelamin" value="Laki-laki" <?= $retVal = ($customer['JenisKelamin'] == "Laki-laki") ? "checked = 'checked'" : ""; ?>>
+                    <label class="form-check-label" for="exampleRadios1">
+                        Laki Laki
+                    </label>
+                    <input class="form-check-input" type="radio" name="JenisKelamin" id="Jenis_Kelamin" value="Perempuan" <?= $retVal = ($customer['JenisKelamin'] == "Perempuan") ? "checked = 'checked'" : ""; ?>>
+                    <label class="form-check-label" for="exampleRadios1">
+                        Perempuan
+                    </label>
+                </div>
+                <div class="form-group">
+                    <label for="email">Alamat</label>
+                    <textarea name="alamat" id="alamat" placeholder="Alamat" class="form-control <?= ($validation->hasError('alamat')) ? 'is-invalid' : ''; ?>"><?= (old('alamat')) ? old('alamat') : $customer['Alamat'] ?></textarea>
+                    <div class=" invalid-feedback">
+                        <?= $validation->getError('Alamat'); ?>
                     </div>
                 </div>
                 <button type="submit" class="btn-edt-prfl">Ubah</button>

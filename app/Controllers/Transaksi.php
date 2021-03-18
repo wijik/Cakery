@@ -15,6 +15,7 @@ class Transaksi extends BaseController
         $this->transModel = new \App\Models\TransaksiModel();
         $this->userModel = new \App\Models\UserModel();
         $this->barangModel = new \App\Models\BahanModel();
+        $this->detailTransaksiModel = new \App\Models\DetailTransaksiModel();
     }
     public function index()
     {
@@ -41,23 +42,28 @@ class Transaksi extends BaseController
     public function view($id)
     {
         $user = $this->userModel->find($this->session->get('id'));
+        $transaksi = $this->transModel->find($id);
+        $id_transaksi = $transaksi['id'];
+        $detailTransaksi = $this->detailTransaksiModel->detail($id_transaksi);
         $data = [
             'title' => "View Transaksi",
-            'transaksi' => $this->transModel->find($id),
+            'transaksi' => $transaksi,
             'user' => $user,
+            'detail' => $detailTransaksi
         ];
         return view('Transaksi/view', $data);
     }
     public function invoice($id)
     {
-        $tranksaksi = $this->transModel->find($id);
-        $pembeli = $this->userModel->find($tranksaksi['id_pembeli']);
-        $barang = $this->barangModel->find($tranksaksi['id_barang']);
+        $transaksi = $this->transModel->find($id);
+        $pembeli = $this->userModel->find($transaksi['id_pembeli']);
+        $id_transaksi = $transaksi['id'];
+        $detailTransaksi = $this->detailTransaksiModel->detail($id_transaksi);
 
         $data = [
-            'transaksi' => $tranksaksi,
+            'transaksi' => $transaksi,
             'pembeli' => $pembeli,
-            'barang' => $barang,
+            'barang' => $detailTransaksi,
         ];
         $html = view('Barang/invoice', $data);
 
@@ -80,7 +86,7 @@ class Transaksi extends BaseController
 
         $attachment = base_url('uploads/Invoice.pdf');
 
-        $message = "<h1>Invoice Pembelian</h1><p>Kepada " . $pembeli['username'] . " Berikut invoice atas pembelian " . $barang['nama_barang'] . "</p>";
+        $message = "<h1>Invoice Pembelian</h1><p>Kepada " . $pembeli['username'];
 
         //$to bisa di isi dengan email user
         $this->sendEmail($attachment, $pembeli['email'], 'Invoice', $message);
